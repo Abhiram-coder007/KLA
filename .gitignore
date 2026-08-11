@@ -219,14 +219,16 @@ __marimo__/
 
 # --- Custom Hackathon Exclusions ---
 
-# Ignore local dataset directories (NEVER sync gigabytes of images to GitHub)
+# Ignore local dataset directories (NEVER sync gigabytes of arrays to GitHub)
 data/
 dataset/
 
-# Ignore loose image files just in case
+# Ignore raw data arrays and loose image files
+*.npy
+*.npz
 *.png
 *.jpg
 *.jpeg
 
-# Ignore Mac hidden system files (so you don't annoy your Windows teammates)
+# Ignore Mac hidden system files
 .DS_Store
