@@ -216,3 +216,17 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# --- Custom Hackathon Exclusions ---
+
+# Ignore local dataset directories (NEVER sync gigabytes of images to GitHub)
+data/
+dataset/
+
+# Ignore loose image files just in case
+*.png
+*.jpg
+*.jpeg
+
+# Ignore Mac hidden system files (so you don't annoy your Windows teammates)
+.DS_Store
