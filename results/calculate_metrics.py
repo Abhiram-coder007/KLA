@@ -14,8 +14,14 @@ except ImportError as error:
         "`python -m pip install -r requirements.txt`."
     ) from error
 
+import sys
+from pathlib import Path
+
+ROOT_DIR = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT_DIR))
+
 from dataset import KLARestorationDataset
-from KLA.inference import select_device
+from inference import select_device
 from model import NAFNetDWT
 
 

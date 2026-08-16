@@ -225,6 +225,8 @@ dataset/
 
 # Ignore raw data arrays and loose image files
 *.npy
+!test_outputs/
+!test_outputs/*.npy
 *.npz
 *.png
 *.jpg
