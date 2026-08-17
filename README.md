@@ -255,6 +255,17 @@ python results/visualize_test.py \
 
 Replace test_degraded and test_restored with the corresponding degraded-input and restored-output directories on your local machine.
 
+### Features
+
+- Wavelet-Guided NAFNet (NAFNetDWT)
+- Patch-based training
+- Data augmentation
+- High-resolution image restoration
+- PSNR/SSIM/LPIPS evaluation
+- Automated inference
+- Pre-trained model checkpoint
+- `.npy` input/output support
+
 ### Validation Results
 
 The final submitted EMA model was evaluated on 400 held-out validation image pairs.
