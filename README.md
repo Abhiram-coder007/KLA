@@ -75,7 +75,8 @@ The environment relies on standard, cross-platform PyTorch libraries without har
 ```bash
 # 1. Create and activate a virtual environment
 python3 -m venv .venv
-source .venv/bin/activate  # On Windows use: .venv\Scripts\activate
+for mac users: source .venv/bin/activate
+On Windows users(Powershell): .venv\Scripts\activate
 
 # 2. Install required dependencies
 python -m pip install --upgrade pip
