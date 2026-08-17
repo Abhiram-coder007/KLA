@@ -38,13 +38,11 @@ We split training into two distinct phases to balance mathematical pixel fidelit
 ### Features
 
 - Wavelet-Guided NAFNet (NAFNetDWT)
-- Patch-based training
-- Data augmentation
+- Patch-based On-the-fly Data augmentation
 - High-resolution image restoration
 - PSNR/SSIM/LPIPS evaluation
 - Automated inference
 - Pre-trained model checkpoint
-- `.npy` input/output support
 
 ---
 
