@@ -35,6 +35,17 @@ We split training into two distinct phases to balance mathematical pixel fidelit
 * Phase 2 (Perceptual Refinement): Training transitions to a composite loss function combining Charbonnier loss, FFT frequency loss, MS-SSIM, full-resolution SSIM, and VGG-LPIPS.
 * EMA Weight Tracking: Throughout training, an Exponential Moving Average (EMA) of model weights is maintained (decay = 0.999). The final submitted model utilizes these EMA weights to smooth parameter variance and improve testing generalization.
 
+### Features
+
+- Wavelet-Guided NAFNet (NAFNetDWT)
+- Patch-based training
+- Data augmentation
+- High-resolution image restoration
+- PSNR/SSIM/LPIPS evaluation
+- Automated inference
+- Pre-trained model checkpoint
+- `.npy` input/output support
+
 ---
 
 ## Repository Structure
@@ -255,16 +266,6 @@ python results/visualize_test.py \
 
 Replace test_degraded and test_restored with the corresponding degraded-input and restored-output directories on your local machine.
 
-### Features
-
-- Wavelet-Guided NAFNet (NAFNetDWT)
-- Patch-based training
-- Data augmentation
-- High-resolution image restoration
-- PSNR/SSIM/LPIPS evaluation
-- Automated inference
-- Pre-trained model checkpoint
-- `.npy` input/output support
 
 ### Validation Results
 
