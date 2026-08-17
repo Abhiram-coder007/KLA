@@ -73,12 +73,26 @@ KLA/
 The environment relies on standard, cross-platform PyTorch libraries without hardware-locked platform dependencies.
 
 ```bash
-# 1. Create and activate a virtual environment
+
+# Clone the repository from GitHub
+git clone https://github.com/Abhiram-coder007/KLA.git
+
+# Move into the project directory
+cd KLA
+
+# Initialize Git LFS on your system
+# Required because the trained model weights (.pth) are stored using Git LFS
+git lfs install
+
+# Download the actual large model files tracked by Git LFS
+git lfs pull
+
+#  Create and activate a virtual environment
 python3 -m venv .venv
 mac users: source .venv/bin/activate
 windows users(Powershell): .venv\Scripts\activate
 
-# 2. Install required dependencies
+#  Install required dependencies
 python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
 ```
