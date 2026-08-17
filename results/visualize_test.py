@@ -10,13 +10,14 @@ def main():
     parser.add_argument(
     "--degraded_dir",
     type=Path,
-    default=ROOT_DIR / "data" / "test_degraded",
+    required=True,
+    help="Directory containing degraded .npy images.",
     )
-
     parser.add_argument(
         "--restored_dir",
         type=Path,
-        default=ROOT_DIR / "data" / "test_restored",
+        required=True,
+        help="Directory containing restored .npy images.",
     )
     parser.add_argument("--num_images", type=int, default=5, help="Number of images to visualize")
     args = parser.parse_args()

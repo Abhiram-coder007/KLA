@@ -1,7 +1,7 @@
 # AI-Based Image Restoration for Semiconductor Inspection
 
-![Python](https://img.shields.io/badge/Python-3.11%2B-blue)
-![PyTorch](https://img.shields.io/badge/PyTorch-2.13%2B-ee4c2c)
+![Python](https://img.shields.io/badge/Python-3.13.7-blue)
+![PyTorch](https://img.shields.io/badge/PyTorch-2.13.0-ee4c2c)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
 Our solution leverages a Wavelet-guided NAFNet (NAFNetDWT) optimized with a multi-loss objective and Exponential Moving Average (EMA) weight tracking, packaged into an inference engine.
@@ -24,7 +24,7 @@ Our solution leverages a Wavelet-guided NAFNet (NAFNetDWT) optimized with a mult
 We utilize a Nonlinear Activation Free Network (NAFNet) as our core backbone. NAFNet achieves restoration efficiency by replacing standard activation functions with SimpleGate mechanisms.
 To handle spatial downsampling, the NAFNet encoder/decoder incorporates 2-D Discrete Haar Wavelet Transforms (DWT & IDWT). This allows the model to process high-frequency texture details without destroying spatial structures.
 
-### 2. Data Augmentation (On-the-Fly GPU Physics)
+### 2. Data Augmentation (On-the-Fly GPU Degradation Simulation)
 To prevent overfitting and promote generalization to unfamiliar image content, we implemented a two-fold augmentation strategy:
 * Spatial Augmentation: 128x128 patch extraction with random horizontal/vertical flips and 90-degree rotations.
 * Dynamic GPU Noise Injection: During the training loop, synthetic degradations are applied on the GPU, including dynamic speckle noise, thermal/Gaussian noise, contrast shifting, Gaussian blur, and salt-and-pepper noise to model physical sensor degradation mechanisms.
@@ -132,6 +132,8 @@ python slice.py \
   --val_gt val_gt
 ```
 
+The paths below are examples. Replace them with the locations of the corresponding training and validation directories on your local machine.
+
 ### Phase 1: PSNR Priority Training (SSIM & LPIPS Weights = 0)
 "This phase maximizes baseline PSNR by optimizing primarily for Charbonnier Loss, with a light FFT frequency term. The perceptual and structural losses (SSIM and LPIPS) are explicitly set to 0."
 
@@ -197,7 +199,7 @@ python npy_to_png.py \
   --input_dir test_restored \
   --output_dir test_restored_pngs
 ```
-Replace `test_restored` with the actual directory containing the generated `.npy` restoration outputs.
+Replace `test_restored` with the local directory containing the generated `.npy` restoration outputs.
 
 ---
 
@@ -205,7 +207,7 @@ Replace `test_restored` with the actual directory containing the generated `.npy
 
 Standalone evaluation scripts are provided to compute quantitative metrics on validation pairs:
 
-Calculate PSNR & SSIM:
+### Calculate PSNR & SSIM:
 
 ```bash
 python results/calculate_metrics.py \
@@ -214,18 +216,20 @@ python results/calculate_metrics.py \
   --checkpoint weights/kla_model_final.pth \
   --output_json results/validation_metrics.json \
   --device auto
+```
+Replace val_degraded and val_gt with the corresponding validation directories on your local machine.
 
-Calculate PSNR & SSIM:
+### Calculate Perceptual Metrics (MS-SSIM & VGG-LPIPS):
 
 ```bash
-python results/calculate_metrics.py \
+python results/evaluate_metrics.py \
   --degraded_dir val_degraded \
   --gt_dir val_gt \
   --checkpoint weights/kla_model_final.pth \
-  --output_json results/validation_metrics.json \
   --device auto
+```
 
-Generate Side-by-Side Visualizations (Test Set):
+### Generate Side-by-Side Visualizations (Test Set):
 
 ```bash
 python results/visualize_test.py \
@@ -233,6 +237,8 @@ python results/visualize_test.py \
   --restored_dir test_restored \
   --num_images 10
 ```
+
+Replace test_degraded and test_restored with the corresponding degraded-input and restored-output directories on your local machine.
 
 ### Validation Results
 
