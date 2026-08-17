@@ -121,11 +121,19 @@ The inference.py script runs completely on its own to meet all evaluation requir
 Run inference on a folder of degraded `.npy` arrays using:
 
 ```bash
+MAC:
 python inference.py \
   --input_dir test_degraded \
   --output_dir test_restored \
   --checkpoint weights/kla_model_final.pth \
   --device auto \
+  --batch_size 4
+WINDOWS:
+python inference.py `
+  --input_dir test_degraded `
+  --output_dir test_restored `
+  --checkpoint weights/kla_model_final.pth `
+  --device auto `
   --batch_size 4
 ```
 
@@ -149,10 +157,17 @@ The script evaluates validation data at the end of every epoch and saves checkpo
 Before starting the training process, you must generate the validation dataset. Use the provided `slice.py` script to automatically extract a subset of the training images and move them into dedicated validation folders.
 
 ```bash
+MAC:
 python slice.py \
   --train_degraded train_degraded \
   --train_gt train_gt \
   --val_degraded val_degraded \
+  --val_gt val_gt
+WINDOWS:
+python slice.py `
+  --train_degraded train_degraded `
+  --train_gt train_gt `
+  --val_degraded val_degraded `
   --val_gt val_gt
 ```
 
@@ -162,6 +177,7 @@ The paths below are examples. Replace them with the locations of the correspondi
 "This phase maximizes baseline PSNR by optimizing primarily for Charbonnier Loss, with a light FFT frequency term. The perceptual and structural losses (SSIM and LPIPS) are explicitly set to 0."
 
 ```bash
+MAC:
 python train.py \
   --train_degraded train_degraded \
   --train_gt train_gt \
@@ -180,12 +196,32 @@ python train.py \
   --lpips_weight 0.0 \
   --device auto \
   --no-amp
+WINDOWS:
+python train.py `
+  --train_degraded train_degraded `
+  --train_gt train_gt `
+  --val_degraded val_degraded `
+  --val_gt val_gt `
+  --output_dir phase1 `
+  --base_dim 48 `
+  --epochs 40 `
+  --lr_epochs 40 `
+  --lr 2e-4 `
+  --batch_size 32 `
+  --num_workers 4 `
+  --ssim_weight 0.0 `
+  --ssim_full_weight 0.0 `
+  --fft_weight 0.05 `
+  --lpips_weight 0.0 `
+  --device auto `
+  --no-amp
 ```
 
 ### Phase 2: Perceptual Refinement (EMA & Multi-Loss)
 This phase loads the best weights from Phase 1, lowers the learning rate, enables Exponential Moving Average (EMA) tracking, and activates the full suite of perceptual and structural losses (FFT, MS-SSIM, SSIM, and LPIPS) to generate the final submission checkpoint.
 
 ```bash
+MAC:
 python train.py \
   --train_degraded train_degraded \
   --train_gt train_gt \
@@ -204,6 +240,25 @@ python train.py \
   --lpips_weight 0.02 \
   --device auto \
   --no-amp
+WINDOWS:
+python train.py `
+  --train_degraded train_degraded `
+  --train_gt train_gt `
+  --val_degraded val_degraded `
+  --val_gt val_gt `
+  --output_dir phase2 `
+  --resume phase1/checkpoints/kla_model.pth `
+  --base_dim 48 `
+  --epochs 30 `
+  --batch_size 16 `
+  --num_workers 4 `
+  --lr 2e-5 `
+  --ssim_weight 0.2 `
+  --ssim_full_weight 1.0 `
+  --fft_weight 0.05 `
+  --lpips_weight 0.02 `
+  --device auto `
+  --no-amp
 ```
 
 (Note: For our final submission, we utilized the checkpoint from the very last training epoch of Phase 2 to ensure maximum EMA smoothing. We took `last_model.pth` generated inside `phase2/checkpoints/` and renamed it to `kla_model_final.pth`.)
@@ -219,8 +274,13 @@ The resulting `kla_model_final.pth` should be placed in the repository's `weight
 The evaluation protocol requires outputting `.npy` arrays. To easily view these restored arrays as standard images, use the provided conversion script:
 
 ```bash
+MAC:
 python npy_to_png.py \
   --input_dir test_restored \
+  --output_dir test_restored_pngs
+WINDOWS:
+python npy_to_png.py `
+  --input_dir test_restored `
   --output_dir test_restored_pngs
 ```
 Replace `test_restored` with the local directory containing the generated `.npy` restoration outputs.
@@ -234,11 +294,19 @@ Standalone evaluation scripts are provided to compute quantitative metrics on va
 ### Calculate PSNR & SSIM:
 
 ```bash
+MAC:
 python results/calculate_metrics.py \
   --degraded_dir val_degraded \
   --gt_dir val_gt \
   --checkpoint weights/kla_model_final.pth \
   --output_json results/validation_metrics.json \
+  --device auto
+WINDOWS:
+python results/calculate_metrics.py `
+  --degraded_dir val_degraded `
+  --gt_dir val_gt `
+  --checkpoint weights/kla_model_final.pth `
+  --output_json results/validation_metrics.json `
   --device auto
 ```
 Replace val_degraded and val_gt with the corresponding validation directories on your local machine.
@@ -246,24 +314,36 @@ Replace val_degraded and val_gt with the corresponding validation directories on
 ### Calculate Perceptual Metrics (MS-SSIM & VGG-LPIPS):
 
 ```bash
+MAC:
 python results/evaluate_metrics.py \
   --degraded_dir val_degraded \
   --gt_dir val_gt \
   --checkpoint weights/kla_model_final.pth \
+  --device auto
+WINDOWS:
+python results/evaluate_metrics.py `
+  --degraded_dir val_degraded `
+  --gt_dir val_gt `
+  --checkpoint weights/kla_model_final.pth `
   --device auto
 ```
 
 ### Generate Side-by-Side Visualizations (Test Set):
 
 ```bash
+MAC:
 python results/visualize_test.py \
   --degraded_dir test_degraded \
   --restored_dir test_restored \
   --num_images 10
+WINDOWS:
+python results/visualize_test.py `
+  --degraded_dir test_degraded `
+  --restored_dir test_restored `
+  --num_images 10
 ```
 
 Replace test_degraded and test_restored with the corresponding degraded-input and restored-output directories on your local machine.
-
 
 ### Validation Results
 
@@ -277,4 +357,3 @@ The final submitted EMA model was evaluated on 400 held-out validation image pai
 | LPIPS ↓ | **0.3282** |
 
 These results were obtained on the held-out validation set and should not be interpreted as performance on the hidden hackathon test set.
-
