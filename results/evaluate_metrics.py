@@ -14,7 +14,7 @@ sys.path.insert(0, str(ROOT_DIR))
 
 from dataset import KLARestorationDataset
 from torch.utils.data import DataLoader
-from inference import select_device
+from run import select_device
 from model import NAFNetDWT
 
 def parse_args() -> argparse.Namespace:
