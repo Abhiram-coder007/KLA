@@ -128,6 +128,7 @@ python inference.py `
   --checkpoint weights/kla_model_final.pth `
   --device auto `
   --batch_size 4
+
 MAC:
 python inference.py \
   --input_dir test_degraded \
@@ -197,6 +198,7 @@ python train.py `
   --lpips_weight 0.0 `
   --device auto `
   --no-amp
+
 MAC:
 python train.py \
   --train_degraded train_degraded \
@@ -242,6 +244,7 @@ python train.py `
   --lpips_weight 0.02 `
   --device auto `
   --no-amp
+
 MAC:
 python train.py \
   --train_degraded train_degraded \
@@ -280,6 +283,7 @@ WINDOWS:
 python npy_to_png.py `
   --input_dir test_restored `
   --output_dir test_restored_pngs
+
 MAC:
 python npy_to_png.py \
   --input_dir test_restored \
@@ -303,6 +307,7 @@ python results/calculate_metrics.py `
   --checkpoint weights/kla_model_final.pth `
   --output_json results/validation_metrics.json `
   --device auto
+
 MAC:
 python results/calculate_metrics.py \
   --degraded_dir val_degraded \
@@ -322,6 +327,7 @@ python results/evaluate_metrics.py `
   --gt_dir val_gt `
   --checkpoint weights/kla_model_final.pth `
   --device auto
+
 MAC:
 python results/evaluate_metrics.py \
   --degraded_dir val_degraded \
