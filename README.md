@@ -84,7 +84,7 @@ The environment relies on standard, cross-platform PyTorch libraries without har
 ```bash
 
 # Clone the repository from GitHub
-git clone https://github.com/Abhiram-coder007/KLA.git
+git clone https://github.com/Abhiram-coder007/Squad-zero.git
 
 # Move into the project directory
 cd KLA
