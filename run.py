@@ -19,21 +19,19 @@ def parse_args() -> argparse.Namespace:
         description="High-performance batched inference for NAFNetDWT."
     )
     parser.add_argument(
-        "--input_dir",
+        "input_dir",
         type=Path,
-        required=True,
         help="Directory containing degraded .npy images.",
     )
     parser.add_argument(
-        "--output_dir",
+        "output_dir",
         type=Path,
-        required=True,
         help="Directory where restored .npy images will be written.",
     )
     parser.add_argument(
         "--checkpoint",
         type=Path,
-        default=script_dir / "weights" / "kla_model_final.pth",
+        default=script_dir / "models" / "kla_model_final.pth",
         help="Model checkpoint path (default: %(default)s).",
     )
     parser.add_argument(
@@ -52,7 +50,7 @@ def parse_args() -> argparse.Namespace:
         "--num_workers",
         type=int,
         default=4,
-        help="Number of background CPU threads for loading disk data.",
+        help="Number of worker processes for loading input data.",
     )
     parser.add_argument(
         "--no_compile",
