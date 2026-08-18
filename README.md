@@ -49,7 +49,7 @@ We split training into two distinct phases to balance mathematical pixel fidelit
 ## Repository Structure
 
 ```text
-KLA/
+Squad-zero/
 ├── README.md                  # Complete documentation
 ├── requirements.txt           # Environment dependencies specification
 ├── run.py               # Standalone, high-throughput evaluation script
