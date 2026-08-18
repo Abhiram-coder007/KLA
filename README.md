@@ -52,7 +52,7 @@ We split training into two distinct phases to balance mathematical pixel fidelit
 KLA/
 ├── README.md                  # Complete documentation
 ├── requirements.txt           # Environment dependencies specification
-├── inference.py               # Standalone, high-throughput evaluation script
+├── run.py               # Standalone, high-throughput evaluation script
 ├── train.py                   # Multi-loss EMA training pipeline
 ├── model.py                   # NAFNetDWT PyTorch architecture
 ├── dataset.py                 # Dataloaders and patch extractors
@@ -109,7 +109,7 @@ python -m pip install -r requirements.txt
 ---
 
 > **A Quick Note on File Paths:**
-> The command-line examples below use generic folder names such as `test_degraded`, `train_degraded`, `train_gt`, `val_degraded`, `val_gt`, and `test_restored`. These paths are provided as examples and should be replaced with the actual locations of the corresponding dataset folders on the evaluation machine. No source-code modification is required to change the input or output locations.
+> The command-line examples below use generic folder names such as `train_degraded`, `train_gt`, `val_degraded`, `val_gt`, and `test_restored`. These paths are provided as examples and should be replaced with the actual locations of the corresponding dataset folders on the evaluation machine. No source-code modification is required to change the input or output locations.
 >
 > The model checkpoint is handled separately and is automatically loaded from `weights/kla_model_final.pth` when using the default inference configuration.
 ---
@@ -122,26 +122,30 @@ Run inference on a folder of degraded `.npy` arrays using:
 
 ```bash
 WINDOWS:
-python inference.py `
-  --input_dir test_degraded `
-  --output_dir test_restored `
+python run.py `
+  --input_dir <input-dir> `
+  --output_dir <output-dir> `
   --checkpoint weights/kla_model_final.pth `
   --device auto `
-  --batch_size 4
+  --batch_size 32 `
+  --num_workers 8
 
 MAC:
-python inference.py \
-  --input_dir test_degraded \
-  --output_dir test_restored \
+python run.py \
+  --input_dir <input-dir> \
+  --output_dir <output-dir> \
   --checkpoint weights/kla_model_final.pth \
   --device auto \
-  --batch_size 4
+  --batch_size 32 \
+  --num_workers 8
 ```
 
-> `test_degraded` and `test_restored` are example paths. Replace them with the corresponding paths to the degraded input directory and desired output directory on your local machine.
+> The example above uses batch size 32 and 8 data-loader workers for the NVIDIA H100 evaluation environment. The batch size is configurable and can be adjusted by the evaluator if required by the benchmark environment.
+
+> Replace `<input-dir>` and `<output-dir>` with the corresponding paths to the degraded input directory and desired output directory on your local machine.
 
 * `--device auto`: Automatically detects CUDA (NVIDIA), MPS (Apple Silicon), or CPU.
-* `--batch_size 4`: Shape-bucketing allows batched inference across varying input dimensions.
+* `--batch_size 32`: Shape-bucketing allows batched inference across varying input dimensions.
 
 ---
 
