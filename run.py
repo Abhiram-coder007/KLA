@@ -283,8 +283,20 @@ def restore_images(
             outputs = restored.float().cpu().numpy()
             
             for i in range(len(filenames)):
-                out_array = outputs[i].squeeze()
-                out_array = np.clip(out_array, 0.0, 1.0).astype(np.float32, copy=False)
+                out_array = outputs[i, 0]
+
+                out_array = np.nan_to_num(
+                    out_array,
+                    nan=0.0,
+                    posinf=1.0,
+                    neginf=0.0,
+                )
+                out_array = np.clip(
+                    out_array,
+                    0.0,
+                    1.0,
+                ).astype(np.float32, copy=False)
+                
                 write_queue.put((out_array, filenames[i]))
 
     # Shutdown background writer thread and check for failures
